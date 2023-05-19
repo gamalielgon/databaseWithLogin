@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/assets/style.css" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  
+    <title>Agregar hardware</title>
+  </head>
+  <body>
+    <h1 id="text-h">Agregar hardware</h1>
+    <div class="row" id="header" style="background-color:burlywood;">
+      <div class="row-fluid ml-auto mr-auto" style="margin:30px;">
+        
+      </div> 
+    </div>
+
+    <div class="col-auto">
+      <form action="/addPerson" method="post">
+        <div class="form-group">
+          <label for="nss"><h4>NSS:</h4></label>
+          <input type="number" id="nss" name="nss" class="form-control col-6"/>
+        </div>
+        <div class="form-group">
+          <label for="nombre"><h4>Nombre</h4></label>
+          <input type="text" id="nombre" name="nombre" class="form-control col-6"/>
+        </div>
+        <div class="form-group">
+          <label for="edad"><h4>Edad:</h4></label>
+          <input type="number" id="edad" name="edad" class="form-control col-6"/>
+        </div>
+        <div class="form-group">
+          <label for="tipoSangre"><h4>Tipo de sangre:</h4></label>
+          <input type="text" id="tipoSangre" name="tipoSangre" class="form-control col-6"/>
+        </div>
+        <div class="form-group">
+          <label for="cargo"><h4>Cargo:</h4></label>
+          <input type="text" id="cargo" name="cargo" class="form-control col-6"/>
+        </div>
+        <div class="form-group">
+          <label for="cel"><h4>Teléfono celular:</h4></label>
+          <input type="number" id="cel" name="cel" class="form-control col-6"/>
+        </div>
+        
+        <!--Se crea un formulario para que reciba la informacion ingresada y la manda a person.js para que pueda ingresarla a MongoDB -->
+        <div class="d-flex justify-content-around">
+          <button type="submit" class="btn btn-primary col-2 ml-auto mr-auto">Enviar</button>
+          <a class="btn btn-warning col-2 ml-auto mr-auto" href="/" role="button">Regresar</a>
+        </div>
+
+      </form>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

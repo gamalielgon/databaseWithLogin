@@ -1,0 +1,47 @@
+<!-- login.ejs -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/md5.js"></script>
+    <title>Iniciar sesión</title>
+    
+  </head>
+  <body>
+    <h1>Iniciar sesión</h1>
+    <form action="/login" method="post" id="loginform">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+    
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+    
+      <button onclick="encryptPassword()">Submit</button>
+    </form>
+    <a class="btn btn-warning col-2 ml-auto mr-auto" href="/" role="button">Regresar</a>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    <script>
+      let formSubmitted = false;
+    
+      function encryptPassword() {
+        if (!formSubmitted) {
+          // Check if the value of the password and username input fields are not empty.
+          if (loginform.password.value.trim() !== '' && loginform.username.value.trim() !== '') {
+            // Encrypt the value of the password input field using the MD5 algorithm.
+            const encryptedPassword = CryptoJS.MD5(loginform.password.value.trim()).toString();
+            loginform.password.value = encryptedPassword;
+    
+            // Set the formSubmitted variable to true to prevent multiple submissions.
+            formSubmitted = true;
+    
+            // Submit the form.
+            loginform.submit();
+          }
+        }
+      }
+    </script>
+
+  </body>
+</html>
