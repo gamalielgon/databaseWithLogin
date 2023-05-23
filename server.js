@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const route = require("./routes/person.js"); //Ahora para tener un archivo server mas limpio se establece la ruta del archivo person el cual contendra una direccion a la cual se dirigira al iniciar el server
+const route = require("./routes/veggies.js");
 
 mongoose.Promise = global.Promise;
 const app = express();

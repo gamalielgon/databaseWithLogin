@@ -3,6 +3,7 @@ const router = express.Router();
 //Ejecutamos una extencion de express donde enviara como enrutar al archivo server.js
 const session = require("express-session");
 let Person = require("../models/person");
+let Veggies = require("../models/veggies");
 const ejs = require('ejs');
 var logged = false;
 var userS = null;
@@ -79,9 +80,30 @@ router.get("/listPerson", requireLogin, (req, res, next) => {
 
 });//Se crea la ruta para ver el listo de registros en la coleccion
 
+router.get("/listVeggies", requireLogin, (req, res, next) => {
+  if (userS!==null){
+    Veggies.find(function (err, eggies) {
+    if (err) return next(err);
+    
+    res.render("veggiesIndex", { veggies }); 
+    });
+  } else {
+    res.redirect("/login");
+  }
+
+});
+
 router.get("/addPerson", requireLogin, function (req, res) {
   if(userS.permission) {
   res.render("person");
+  } else {
+    res.redirect("/login");
+  }
+}); //Se crea el render con el objetivo poder ver el formulario donde podremos enviar los datos
+
+router.get("/addVeggies", requireLogin, function (req, res) {
+  if(userS.permission) {
+  res.render("veggies");
   } else {
     res.redirect("/login");
   }
@@ -105,6 +127,20 @@ router.post("/addPerson", requireLogin, function (req, res) {
   
 });
 // Se crea una ruta a la cual va a poder acceder el servidor para poder observar la colecion
+router.post("/addVeggies", requireLogin, function (req, res) {
+  if(userS.permission){
+    const myVeggies = new Veggies({
+    nombre: req.body.nombre,
+    edad: req.body.cantidad,
+    tipoSangre: req.body.proveedor,
+  }); //Se creo una nueva identidad para que permita agregar a un nuevo objeto en el coleccion de MongoDB
+  myVeggies.save();
+  res.redirect("/listVeggies");
+  } else {
+    res.redirect("/login");
+  }
+  
+});
 
 //DELETE PERSON - findByIdAndRemove
 router.get("/deletePerson/:id", requireLogin, function (req, res, next) {
@@ -112,6 +148,17 @@ router.get("/deletePerson/:id", requireLogin, function (req, res, next) {
     Person.findByIdAndRemove(req.params.id, req.body, function (err, post) {
       if (err) return next(err); // Se crea la funcion la cual encontrara y eliminara el objeto deseado
       res.redirect("/listPerson"); // Se recarga la pagina para actualizarse
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
+
+router.get("/deleteVeggies/:id", requireLogin, function (req, res, next) {
+  if(userS.permission){
+    Veggies.findByIdAndRemove(req.params.id, req.body, function (err, post) {
+      if (err) return next(err); // Se crea la funcion la cual encontrara y eliminara el objeto deseado
+      res.redirect("/listVeggies"); // Se recarga la pagina para actualizarse
     });
   } else {
     res.redirect("/login");
@@ -159,6 +206,40 @@ router.post("/updatePerson", function (req, res, next) {
     function (err, post) {
       if (err) return next(err);
       res.redirect("/listPerson");
+    }
+  ); //Se redirige a la pagina de la tabla actualizada
+  } else {
+    res.redirect("/login");
+  }
+  
+});
+
+router.get("/findById/:id", function (req, res, next) {
+  if(userS.permission){
+    Veggies.find(req.params.id, function (err, veggies) {
+      if (err) return next(err); // Se crea la funcion la cual encontrara y se redirigira a la pagina de edicion
+      res.render("veggiesUpdate", { veggies }); //Renderiza la pagina de edicion
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
+
+router.post("/updateVeggies", function (req, res, next) {
+  if(userS.permission){
+    Veggies.findByIdAndUpdate(
+    req.body.objId,
+    {
+      nombre: req.body.nombreV,
+      edad: req.body.cantidad,
+      tipoSangre: req.body.proveedor,
+      nss: req.body.nss,
+      cargo: req.body.cargo,
+      cel: req.body.cel,
+    }, //Actualiza la base de datos con lo editado en la pagina
+    function (err, post) {
+      if (err) return next(err);
+      res.redirect("/listVeggies");
     }
   ); //Se redirige a la pagina de la tabla actualizada
   } else {
