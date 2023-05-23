@@ -33,7 +33,6 @@ function requireLogin(req, res, next) {
   }
 }
 
-
 router.get("/", function (req, res) {
   res.render("main");
 }); //Se crea una ruta raiz para cuando ingrese al localhost y esta ejecuta el index.ejs
@@ -66,21 +65,26 @@ router.post('/login', (req, res) => {
   }
 });
 
+// Ruta para listar personas
 router.get("/listPerson", requireLogin, (req, res, next) => {
-  if (userS.permission){
-      Person.find(function (err, person) {
+  if (userS!==null){
+    Person.find(function (err, person) {
     if (err) return next(err);
     //res.json(person); Ahora en lugar de renderizar el json de person
     res.render("personIndex", { person }); //Ejecutara el archivo 'personIndex' y tambien le envia el json
-  });
+    });
   } else {
     res.redirect("/login");
   }
 
-}); //Se crea la ruta para ver el listo de registros en la coleccion
+});//Se crea la ruta para ver el listo de registros en la coleccion
 
 router.get("/addPerson", requireLogin, function (req, res) {
+  if(userS.permission) {
   res.render("person");
+  } else {
+    res.redirect("/login");
+  }
 }); //Se crea el render con el objetivo poder ver el formulario donde podremos enviar los datos
 
 router.post("/addPerson", requireLogin, function (req, res) {
@@ -114,10 +118,24 @@ router.get("/deletePerson/:id", requireLogin, function (req, res, next) {
   }
 });
 
+//SEARCH PERSONS
+router.get('/search', requireLogin, (req, res, next) => {
+  if(userS!=null){
+     const searchTerm = req.query.term;
+    Person.find({ nombre: { $regex: searchTerm, $options: 'i' } }, (err, persons) => {
+    if (err) return next(err);
+    res.render('personIndex', { person: persons });
+  });
+  } else {
+    res.redirect("/login");
+  }
+});
+
+
 //EDIT PERSON - findById
-router.get("/findById/:id", requireLogin, function (req, res, next) {
+router.get("/findById/:id", function (req, res, next) {
   if(userS.permission){
-    Person.findById(req.params.id, function (err, person) {
+    Person.find(req.params.id, function (err, person) {
       if (err) return next(err); // Se crea la funcion la cual encontrara y se redirigira a la pagina de edicion
       res.render("personUpdate", { person }); //Renderiza la pagina de edicion
     });
@@ -126,7 +144,7 @@ router.get("/findById/:id", requireLogin, function (req, res, next) {
   }
 });
 
-router.post("/updatePerson", requireLogin, function (req, res, next) {
+router.post("/updatePerson", function (req, res, next) {
   if(userS.permission){
     Person.findByIdAndUpdate(
     req.body.objId,

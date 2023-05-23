@@ -16,37 +16,44 @@
       <div class="row-fluid ml-auto mr-auto" style="margin:30px;">
       </div> 
   </div> 
-
-    <table class="styled-table">
-      <tr>
-        <div class="d-flex">
-        <th>NSS</th>
-        <th>Nombre</th>
-        <th>Edad</th>
-        <th>Tipo de sangre</th>
-        <th>Cargo</th>
-        <th>Teléfono celular</th>
-        <th></th>
-        <th></th>
-        </div>
-        <!--Se crean dos columnas sin nombre-->
-      </tr>
-      <!--Dentro de la tabla se estara ingresando la informacion proveniente del json-->
-      <% Object.keys(person).forEach(function(prop) { %>
-      <!--Menciona que por cada llave de person utilizara un prop-->
-      <tr>
-        <td><%- person[prop].nss %></td>
-        <td><%- person[prop].nombre %></td>
-        <td><%- person[prop].edad %></td>
-        <td><%- person[prop].tipoSangre %></td>
-        <td><%- person[prop].cargo %></td>
-        <td><%- person[prop].cel %></td>
-        <td><a href="<%= `deletePerson/${person[prop]._id}` %>" class="btn btn-danger">Delete</a></td>
-        <td><a href="<%= `findById/${person[prop]._id}` %>" class="btn btn-success">Update</a></td>
-        <!--Se crean la edicion y eliminacion del documento por medio de un hipervinculo-->
-      </tr>
-      <% }); %>
-    </table>
+  
+  <div>
+    <form action="/search" method="GET"> <!-- Agrega el atributo "action" y "method" al formulario -->
+      <input type="text" id="search" name="term" placeholder="Search"> <!-- Agrega el atributo "name" al campo de búsqueda -->
+      <button type="submit" id="searchBtn">Search</button> <!-- Cambia el elemento "button" por un botón de tipo "submit" -->
+    </form>
+  </div>
+  
+      <table class="styled-table">
+        <tr>
+          <div class="d-flex">
+          <th>NSS</th>
+          <th>Nombre</th>
+          <th>Edad</th>
+          <th>Tipo de sangre</th>
+          <th>Cargo</th>
+          <th>Teléfono celular</th>
+          <th></th>
+          <th></th>
+          </div>
+          <!--Se crean dos columnas sin nombre-->
+        </tr>
+        <!--Dentro de la tabla se estara ingresando la informacion proveniente del json-->
+        <% Object.keys(person).forEach(function(prop) { %>
+        <!--Menciona que por cada llave de person utilizara un prop-->
+        <tr>
+          <td><%- person[prop].nss %></td>
+          <td><%- person[prop].nombre %></td>
+          <td><%- person[prop].edad %></td>
+          <td><%- person[prop].tipoSangre %></td>
+          <td><%- person[prop].cargo %></td>
+          <td><%- person[prop].cel %></td>
+          <td><a href="<%= `deletePerson/${person[prop]._id}` %>" class="btn btn-danger">Delete</a></td>
+          <td><a href="<%= `findById/${person[prop]._id}` %>" class="btn btn-success">Update</a></td>
+          <!--Se crean la edicion y eliminacion del documento por medio de un hipervinculo-->
+        </tr>
+        <% }); %>
+      </table>
 
     <br />
     <div class="d-flex justify-content-around">
