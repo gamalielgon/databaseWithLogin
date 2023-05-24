@@ -34,11 +34,19 @@ function requireLogin(req, res, next) {
 }
 
 router.get("/", function (req, res) {
-  res.render("main");
+  if (logged) {
+    // El usuario ha iniciado sesión correctamente
+    res.render('main')
+  } else {
+    // El usuario no ha iniciado sesión, redirigir al formulario de inicio de sesión
+    res.redirect('/login');
+  }
+
 }); //Se crea una ruta raiz para cuando ingrese al localhost y esta ejecuta el index.ejs
 
 // Ruta para mostrar el formulario de inicio de sesión
 router.get("/login", function (req, res) {
+  
   res.render("login");
 });
 
@@ -61,7 +69,7 @@ router.post('/login', (req, res) => {
     //res.render('success', { username });
     userS = user
     logged = true;
-    res.redirect('/listPerson');
+    res.redirect('/');//
   }
 });
 
