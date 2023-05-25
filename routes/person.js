@@ -1,10 +1,8 @@
 const express = require("express");
 const router = express.Router();
 //Ejecutamos una extencion de express donde enviara como enrutar al archivo server.js
-const session = require("express-session");
 let Person = require("../models/person");
 let Veggies = require("../models/veggies");
-const ejs = require('ejs');
 var logged = false;
 var userS = null;
 
@@ -236,7 +234,7 @@ router.post("/updatePerson", function (req, res, next) {
 });
 
 router.get("/findByIdVeggie/:id", function (req, res, next) {
-  if (userS.permission) {
+  if (userS) {
     Veggies.findById(req.params.id, function (err, veggie) {
       if (err) return next(err);
       res.render("veggieUpdate", { veggie });
@@ -247,7 +245,7 @@ router.get("/findByIdVeggie/:id", function (req, res, next) {
 });
 
 router.post("/updateVeggie", function (req, res, next) {
-  if (userS.permission) {
+  if (userS) {
     Veggies.findByIdAndUpdate(
       req.body.objId,
       {

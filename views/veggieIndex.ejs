@@ -44,8 +44,9 @@
           <td><%- veggie[prop].proveedor %></td>
           <% if (userS.permission) { %>
             <td><a href="<%= `deleteVeggie/${veggie[prop]._id}` %>" class="btn btn-danger">Delete</a></td>
-            <td><a href="<%= `findByIdVeggie/${veggie[prop]._id}` %>" class="btn btn-success">Update</a></td>
+
           <% } %>
+          <td><a href="<%= `findByIdVeggie/${veggie[prop]._id}` %>" class="btn btn-success">Update</a></td>
           
           <!--Se crean la edicion y eliminacion del documento por medio de un hipervinculo-->
         </tr>
