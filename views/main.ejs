@@ -13,22 +13,27 @@
 
   </head>
   <body>
-    <h1 id="text-h-1">Base de datos de empleados</h1>
+    <h1 id="text-h-1">Base de datos Taquitos el Pastor</h1>
   <div class="row" id="header" style="background-color:burlywood;">
       <div class="row-fluid ml-auto mr-auto" style="margin:30px;">
   </div> 
   </div>
       <br><br>
     <div class="d-flex flex-row  justify-content-aroud">
-      <script type="text/javascript">
-        
-      </script>
-      <a class="btn btn-outline-primary ml-auto mr-auto" href="/addPerson" role="button">Agregar empleado</a>
+      <% if (userS.permission) { %> <!-- Verifica si el usuario tiene permiso de administrador -->
+        <a class="btn btn-outline-primary ml-auto mr-auto" href="/addPerson" role="button">Agregar empleado</a>
+      <% } %>
       <a class="btn btn-outline-primary ml-auto mr-auto" href="/listPerson" role="button">Ver empleados</a>
+    </div>
+    <div class="d-flex flex-row  justify-content-aroud">
+      <% if (userS.permission) { %> <!-- Verifica si el usuario tiene permiso de administrador -->
+        <a class="btn btn-outline-primary ml-auto mr-auto" href="/addVeggie" role="button">Agregar ingrediente</a>
+      <% } %>
+      <a class="btn btn-outline-primary ml-auto mr-auto" href="/listVeggie" role="button">Ver ingredientes</a>
     </div>
     <div>
       <form id="logoutForm" action="/logout" method="post">
-        <button type="submit">Logout</button>
+        <button class="btn btn-outline-danger ml-auto mr-auto" type="submit">Logout</button>
       </form>
     </div>
       

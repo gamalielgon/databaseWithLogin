@@ -16,11 +16,11 @@ app.use(express.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
 
-// pass = "FindMe"
-// admin = "ElPerroRojoYAdamElBuho"
+// pass = "!s983a7VL"
+// admin = "8&EEN!cBTbazuZoA"
 const users = [
-  {username: "Admin", hashedPassword: "a687420bf4ef21c5c6299be01a2f1ee1", permission: true},
-  {username: "User", hashedPassword: "d9c67ecac25ee5b03f65af8d8da8bdb1", permission: false},
+  {username: "Admin", hashedPassword: "6c5d300dab34d566022ef043a8d69580", permission: true},
+  {username: "User", hashedPassword: "0cc99c87ff74dc80630547673ad4be06", permission: false},
 ];
 
 // Middleware para verificar la autenticación del usuario
@@ -37,7 +37,7 @@ function requireLogin(req, res, next) {
 router.get("/", function (req, res) {
   if (logged) {
     // El usuario ha iniciado sesión correctamente
-    res.render('main')
+    res.render('main', { userS })
   } else {
     // El usuario no ha iniciado sesión, redirigir al formulario de inicio de sesión
     res.redirect('/login');
@@ -80,7 +80,7 @@ router.get("/listPerson", requireLogin, (req, res, next) => {
     Person.find(function (err, person) {
     if (err) return next(err);
     //res.json(person); Ahora en lugar de renderizar el json de person
-    res.render("personIndex", { person }); //Ejecutara el archivo 'personIndex' y tambien le envia el json
+    res.render("personIndex", { person, userS }); //Ejecutara el archivo 'personIndex' y tambien le envia el json
     });
   } else {
     res.redirect("/login");
@@ -88,12 +88,11 @@ router.get("/listPerson", requireLogin, (req, res, next) => {
 
 });//Se crea la ruta para ver el listo de registros en la coleccion
 
-router.get("/listVeggies", requireLogin, (req, res, next) => {
+router.get("/listVeggie", requireLogin, (req, res, next) => {
   if (userS!==null){
-    Veggies.find(function (err, eggies) {
+    Veggies.find(function (err, veggie) {
     if (err) return next(err);
-    
-    res.render("veggiesIndex", { veggies }); 
+    res.render("veggieIndex", { veggie, userS }); 
     });
   } else {
     res.redirect("/login");
@@ -104,14 +103,6 @@ router.get("/listVeggies", requireLogin, (req, res, next) => {
 router.get("/addPerson", requireLogin, function (req, res) {
   if(userS.permission) {
   res.render("person");
-  } else {
-    res.redirect("/login");
-  }
-}); //Se crea el render con el objetivo poder ver el formulario donde podremos enviar los datos
-
-router.get("/addVeggies", requireLogin, function (req, res) {
-  if(userS.permission) {
-  res.render("veggies");
   } else {
     res.redirect("/login");
   }
@@ -134,16 +125,25 @@ router.post("/addPerson", requireLogin, function (req, res) {
   }
   
 });
+
+router.get("/addVeggie", requireLogin, function (req, res) {
+  if(userS.permission) {
+  res.render("veggieAdd");
+  } else {
+    res.redirect("/login");
+  }
+}); //Se crea el render con el objetivo poder ver el formulario donde podremos enviar los datos
+
 // Se crea una ruta a la cual va a poder acceder el servidor para poder observar la colecion
-router.post("/addVeggies", requireLogin, function (req, res) {
+router.post("/addVeggie", requireLogin, function (req, res) {
   if(userS.permission){
     const myVeggies = new Veggies({
-    nombre: req.body.nombre,
-    edad: req.body.cantidad,
-    tipoSangre: req.body.proveedor,
+    nombreV: req.body.nombreV,
+    cantidad: req.body.cantidad,
+    proveedor: req.body.proveedor,
   }); //Se creo una nueva identidad para que permita agregar a un nuevo objeto en el coleccion de MongoDB
   myVeggies.save();
-  res.redirect("/listVeggies");
+  res.redirect("/listVeggie");
   } else {
     res.redirect("/login");
   }
@@ -162,11 +162,11 @@ router.get("/deletePerson/:id", requireLogin, function (req, res, next) {
   }
 });
 
-router.get("/deleteVeggies/:id", requireLogin, function (req, res, next) {
+router.get("/deleteVeggie/:id", requireLogin, function (req, res, next) {
   if(userS.permission){
     Veggies.findByIdAndRemove(req.params.id, req.body, function (err, post) {
       if (err) return next(err); // Se crea la funcion la cual encontrara y eliminara el objeto deseado
-      res.redirect("/listVeggies"); // Se recarga la pagina para actualizarse
+      res.redirect("/listVeggie"); // Se recarga la pagina para actualizarse
     });
   } else {
     res.redirect("/login");
@@ -179,7 +179,20 @@ router.get('/search', requireLogin, (req, res, next) => {
      const searchTerm = req.query.term;
     Person.find({ nombre: { $regex: searchTerm, $options: 'i' } }, (err, persons) => {
     if (err) return next(err);
-    res.render('personIndex', { person: persons });
+    res.render('personIndex', { person: persons, userS });
+  });
+  } else {
+    res.redirect("/login");
+  }
+});
+
+//SEARCH PERSONS
+router.get('/veggieSearch', requireLogin, (req, res, next) => {
+  if(userS!=null){
+     const searchTerm = req.query.term;
+    Veggies.find({ nombreV: { $regex: searchTerm, $options: 'i' } }, (err, veggies) => {
+    if (err) return next(err);
+    res.render('veggieIndex', { veggie: veggies, userS });
   });
   } else {
     res.redirect("/login");
@@ -190,7 +203,7 @@ router.get('/search', requireLogin, (req, res, next) => {
 //EDIT PERSON - findById
 router.get("/findById/:id", function (req, res, next) {
   if(userS.permission){
-    Person.find(req.params.id, function (err, person) {
+    Person.findById(req.params.id, function (err, person) {
       if (err) return next(err); // Se crea la funcion la cual encontrara y se redirigira a la pagina de edicion
       res.render("personUpdate", { person }); //Renderiza la pagina de edicion
     });
@@ -222,39 +235,43 @@ router.post("/updatePerson", function (req, res, next) {
   
 });
 
-router.get("/findById/:id", function (req, res, next) {
-  if(userS.permission){
-    Veggies.find(req.params.id, function (err, veggies) {
-      if (err) return next(err); // Se crea la funcion la cual encontrara y se redirigira a la pagina de edicion
-      res.render("veggiesUpdate", { veggies }); //Renderiza la pagina de edicion
+router.get("/findByIdVeggie/:id", function (req, res, next) {
+  if (userS.permission) {
+    Veggies.findById(req.params.id, function (err, veggie) {
+      if (err) return next(err);
+      res.render("veggieUpdate", { veggie });
     });
   } else {
     res.redirect("/login");
   }
 });
 
-router.post("/updateVeggies", function (req, res, next) {
-  if(userS.permission){
+router.post("/updateVeggie", function (req, res, next) {
+  if (userS.permission) {
     Veggies.findByIdAndUpdate(
-    req.body.objId,
-    {
-      nombre: req.body.nombreV,
-      edad: req.body.cantidad,
-      tipoSangre: req.body.proveedor,
-      nss: req.body.nss,
-      cargo: req.body.cargo,
-      cel: req.body.cel,
-    }, //Actualiza la base de datos con lo editado en la pagina
-    function (err, post) {
-      if (err) return next(err);
-      res.redirect("/listVeggies");
+      req.body.objId,
+      {
+        nombreV: req.body.nombreV,
+        cantidad: req.body.cantidad,
+        proveedor: req.body.proveedor,
+      }, //Actualiza la base de datos con lo editado en la pagina
+      function (err, post) {
+        if (err) return next(err);
+        res.redirect("/listVeggie");
+      }
+    ); //Se redirige a la pagina de la tabla actualizada
+    } else {
+      res.redirect("/login");
     }
-  ); //Se redirige a la pagina de la tabla actualizada
-  } else {
-    res.redirect("/login");
-  }
-  
+    
 });
+
+
+
+
+
+
+
 //***** */
 
 router.post('/logout', (req, res) => {

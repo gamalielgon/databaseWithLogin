@@ -8,49 +8,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   
-    <title>Lista de empleados</title>
+    <title>Lista de ingredientes</title>
   </head>
   <body>
-        <h1 id="text-h">Empleados</h1>
+        <h1 id="text-h">Ingredientes</h1>
     <div class="row" id="header" style="background-color:burlywood;">
       <div class="row-fluid ml-auto mr-auto" style="margin:30px;">
       </div> 
   </div> 
   
   <div>
-    <form action="/search" method="GET"> <!-- Agrega el atributo "action" y "method" al formulario -->
-      <input type="text" id="search" name="term" placeholder="Search"> <!-- Agrega el atributo "name" al campo de búsqueda -->
-      <button type="submit" id="searchBtn">Search</button> <!-- Cambia el elemento "button" por un botón de tipo "submit" -->
+    <form action="/veggieSearch" method="GET"> <!-- Agrega el atributo "action" y "method" al formulario -->
+      <input type="text" id="veggieSearch" name="term" placeholder="Search"> <!-- Agrega el atributo "name" al campo de búsqueda -->
+      <button type="submit" id="searchBtn">Buscar</button> <!-- Cambia el elemento "button" por un botón de tipo "submit" -->
     </form>
   </div>
   
       <table class="styled-table">
         <tr>
           <div class="d-flex">
-          <th>NSS</th>
-          <th>Nombre</th>
-          <th>Edad</th>
-          <th>Tipo de sangre</th>
-          <th>Cargo</th>
-          <th>Teléfono celular</th>
+          <th>Ingrediente</th>
+          <th>Cantidad</th>
+          <th>Proveedor</th>
           <th></th>
           <th></th>
           </div>
           <!--Se crean dos columnas sin nombre-->
         </tr>
         <!--Dentro de la tabla se estara ingresando la informacion proveniente del json-->
-        <% Object.keys(person).forEach(function(prop) { %>
+        <% Object.keys(veggie).forEach(function(prop) { %>
         <!--Menciona que por cada llave de person utilizara un prop-->
         <tr>
-          <td><%- person[prop].nss %></td>
-          <td><%- person[prop].nombre %></td>
-          <td><%- person[prop].edad %></td>
-          <td><%- person[prop].tipoSangre %></td>
-          <td><%- person[prop].cargo %></td>
-          <td><%- person[prop].cel %></td>
+          <td><%- veggie[prop].nombreV %></td>
+          <td><%- veggie[prop].cantidad %></td>
+          <td><%- veggie[prop].proveedor %></td>
           <% if (userS.permission) { %>
-            <td><a href="<%= `deletePerson/${person[prop]._id}` %>" class="btn btn-danger">Delete</a></td>
-            <td><a href="<%= `findById/${person[prop]._id}` %>" class="btn btn-success">Update</a></td>
+            <td><a href="<%= `deleteVeggie/${veggie[prop]._id}` %>" class="btn btn-danger">Delete</a></td>
+            <td><a href="<%= `findByIdVeggie/${veggie[prop]._id}` %>" class="btn btn-success">Update</a></td>
           <% } %>
           
           <!--Se crean la edicion y eliminacion del documento por medio de un hipervinculo-->
@@ -61,7 +55,7 @@
     <br />
     <div class="d-flex justify-content-around">
       <% if (userS.permission) { %>
-        <a class="btn btn-outline-primary col-2 ml-auto mr-auto" href="/addPerson" role="button">Agregar empleado</a>
+        <a class="btn btn-outline-primary col-2 ml-auto mr-auto" href="/addVeggie" role="button">Agregar ingrediente</a>
       <% } %>
       <a class="btn btn-warning col-2 ml-auto mr-auto" href="/" role="button">Regresar</a>
     </div>

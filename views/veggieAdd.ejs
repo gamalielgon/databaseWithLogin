@@ -12,7 +12,7 @@
     <title>Agregar hardware</title>
   </head>
   <body>
-    <h1 id="text-h">Agregar hardware</h1>
+    <h1 id="text-h">Agregar Ingrediente</h1>
     <div class="row" id="header" style="background-color:burlywood;">
       <div class="row-fluid ml-auto mr-auto" style="margin:30px;">
         
@@ -20,32 +20,19 @@
     </div>
 
     <div class="col-auto">
-      <form action="/addPerson" method="post">
+      <form action="/addVeggie" method="post">
         <div class="form-group">
-          <label for="nss"><h4>NSS:</h4></label>
-          <input type="number" id="nss" name="nss" class="form-control col-6"/>
+          <label for="nombreV"><h4>Ingrediente:</h4></label>
+          <input type="text" id="nombreV" name="nombreV" class="form-control col-6"/>
         </div>
         <div class="form-group">
-          <label for="nombre"><h4>Nombre</h4></label>
-          <input type="text" id="nombre" name="nombre" class="form-control col-6"/>
+          <label for="cantidad"><h4>Cantidad</h4></label>
+          <input type="number" id="cantidad" name="cantidad" class="form-control col-6"/>
         </div>
         <div class="form-group">
-          <label for="edad"><h4>Edad:</h4></label>
-          <input type="number" id="edad" name="edad" class="form-control col-6"/>
+          <label for="proveedor"><h4>Proveedor:</h4></label>
+          <input type="text" id="proveedor" name="proveedor" class="form-control col-6"/>
         </div>
-        <div class="form-group">
-          <label for="tipoSangre"><h4>Tipo de sangre:</h4></label>
-          <input type="text" id="tipoSangre" name="tipoSangre" class="form-control col-6"/>
-        </div>
-        <div class="form-group">
-          <label for="cargo"><h4>Cargo:</h4></label>
-          <input type="text" id="cargo" name="cargo" class="form-control col-6"/>
-        </div>
-        <div class="form-group">
-          <label for="cel"><h4>Teléfono celular:</h4></label>
-          <input type="number" id="cel" name="cel" class="form-control col-6"/>
-        </div>
-        
         <!--Se crea un formulario para que reciba la informacion ingresada y la manda a person.js para que pueda ingresarla a MongoDB -->
         <div class="d-flex justify-content-around">
           <button type="submit" class="btn btn-primary col-2 ml-auto mr-auto">Enviar</button>
